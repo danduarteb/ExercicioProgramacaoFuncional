@@ -5,9 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import entities.Employee;
@@ -51,16 +55,52 @@ public class Program {
 			
 			empregados2.addAll(empregados);
 			empregados.removeIf(new SalaryPredicate(salary));
-			empregados.sort(new EmailComparator());
-			emails = empregados.stream().map(new EmailEmployee()).collect(Collectors.toList());
+			//empregados.sort(new EmailComparator());
+			
+			Comparator<Employee> comp = new Comparator<Employee>() {
+				
+				public int compare(Employee e1, Employee e2) {
+					return e1.getEmail().toUpperCase().compareTo(e2.getEmail().toUpperCase());
+				}
+			};
+			
+			empregados.sort(comp);
+			
+			//emails = empregados.stream().map(new EmailEmployee()).collect(Collectors.toList());
+			
+			Function<Employee, String> funct = new Function<Employee, String>() {
+				@Override
+				public String apply(Employee e) {
+					return e.getEmail();
+				}
+			};
+			
+			emails = empregados.stream().map(funct).collect(Collectors.toList());
 			
 			
 			System.out.println("Email of people whose salary is more than " + salary);
 			emails.forEach(System.out::println);
 			
-			System.out.println("Sum of salary of people whose name starts with 'M': " + new EmployeeService().filteredSum(empregados2, new CharacterEmployee('M')));
+			char c = 'M';
 			
-			empregados2.forEach(new SalaryUpdate());
+			Predicate<Employee> predic = new Predicate<Employee>() {
+				public boolean test(Employee e) {
+					return e.getName().charAt(0) == c;
+				}
+			};
+			
+			System.out.println("Sum of salary of people whose name starts with 'M': " 
+					+ new EmployeeService().filteredSum(empregados2
+							, predic));
+			
+			Consumer<Employee> cons = new Consumer<Employee>() {
+				@Override
+				public void accept(Employee e) {
+					e.setSalary(e.getSalary()*0.1);
+				}
+			};
+			
+			empregados2.forEach(cons);
 			empregados2.forEach(System.out::println);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
