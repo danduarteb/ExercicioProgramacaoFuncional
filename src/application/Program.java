@@ -54,7 +54,14 @@ public class Program {
 			}
 			
 			empregados2.addAll(empregados);
-			empregados.removeIf(new SalaryPredicate(salary));
+			//empregados.removeIf(new SalaryPredicate(salary));
+			
+			Predicate<Employee> predicaSalary = p1 -> {
+				return p1.getSalary() <= salary;
+			};
+			
+			empregados.removeIf(predicaSalary);
+			
 			//empregados.sort(new EmailComparator());
 			
 			/*Comparator<Employee> comp = new Comparator<Employee>() {
@@ -68,7 +75,13 @@ public class Program {
 			
 			//empregados.sort(Employee::compareEmail);
 			
-			empregados.sort(Employee::compareNonStaticEmail);
+			//empregados.sort(Employee::compareNonStaticEmail);
+			
+			Comparator<Employee> comp = (p1, p2) -> {
+				return p1.getEmail().toUpperCase().compareTo(p2.getEmail().toUpperCase());
+			};
+			
+			empregados.sort(comp);
 			
 			//emails = empregados.stream().map(new EmailEmployee()).collect(Collectors.toList());
 			
@@ -83,7 +96,11 @@ public class Program {
 			
 			//emails = empregados.stream().map(Employee::applyEmail).collect(Collectors.toList());
 			
-			emails = empregados.stream().map(Employee::applyNonStaticEmail).collect(Collectors.toList());
+			Function<Employee, String> func = (p) -> {
+				return p.getEmail();
+			};
+			
+			emails = empregados.stream().map(func).collect(Collectors.toList());
 			
 			System.out.println("Email of people whose salary is more than " + salary);
 			emails.forEach(System.out::println);
@@ -104,9 +121,17 @@ public class Program {
 					+ new EmployeeService().filteredSum(empregados2
 							, predic));*/
 			
+			/*System.out.println("Sum of salary of people whose name starts with 'M': " 
+					+ Employee.filteredSum(empregados2
+							, Employee::testCharacter));*/
+			
+			Predicate<Employee> pred2 = p -> {
+				return p.getName().charAt(0) == 'M';
+			};
+			
 			System.out.println("Sum of salary of people whose name starts with 'M': " 
 					+ Employee.filteredSum(empregados2
-							, Employee::testCharacter));
+							, pred2));
 			
 			//empregados2.forEach(new SalaryUpdate());
 			
@@ -120,6 +145,12 @@ public class Program {
 			empregados2.forEach(cons);*/
 			
 			empregados2.forEach(Employee::acceptSalary);
+			
+			Consumer<Employee> consum = e -> {
+				e.setSalary(e.getSalary());
+			};
+			
+			empregados2.forEach(consum);
 			
 			empregados2.forEach(System.out::println);
 		} catch (FileNotFoundException e) {
