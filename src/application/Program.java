@@ -56,11 +56,13 @@ public class Program {
 			empregados2.addAll(empregados);
 			//empregados.removeIf(new SalaryPredicate(salary));
 			
-			Predicate<Employee> predicaSalary = p1 -> {
+			/*Predicate<Employee> predicaSalary = p1 -> {
 				return p1.getSalary() <= salary;
-			};
+			};*/
 			
-			empregados.removeIf(predicaSalary);
+			Predicate<Employee> pred = p1 -> p1.getSalary() <= 2000.00;
+			
+			empregados.removeIf(pred);
 			
 			//empregados.sort(new EmailComparator());
 			
@@ -77,9 +79,12 @@ public class Program {
 			
 			//empregados.sort(Employee::compareNonStaticEmail);
 			
-			Comparator<Employee> comp = (p1, p2) -> {
+			/*Comparator<Employee> comp = (p1, p2) -> {
 				return p1.getEmail().toUpperCase().compareTo(p2.getEmail().toUpperCase());
-			};
+			};*/
+			
+			Comparator<Employee> comp = (p1, p2) -> 
+				p1.getEmail().toUpperCase().compareTo(p2.getEmail().toUpperCase());
 			
 			empregados.sort(comp);
 			
@@ -96,9 +101,11 @@ public class Program {
 			
 			//emails = empregados.stream().map(Employee::applyEmail).collect(Collectors.toList());
 			
-			Function<Employee, String> func = (p) -> {
+			/*Function<Employee, String> func = (p) -> {
 				return p.getEmail();
-			};
+			};*/
+			
+			Function<Employee, String> func = p ->  p.getEmail();
 			
 			emails = empregados.stream().map(func).collect(Collectors.toList());
 			
@@ -125,9 +132,11 @@ public class Program {
 					+ Employee.filteredSum(empregados2
 							, Employee::testCharacter));*/
 			
-			Predicate<Employee> pred2 = p -> {
+			/*Predicate<Employee> pred2 = p -> {
 				return p.getName().charAt(0) == 'M';
-			};
+			};*/
+			
+			Predicate<Employee> pred2 = p -> p.getName().charAt(0) == 'M';
 			
 			System.out.println("Sum of salary of people whose name starts with 'M': " 
 					+ Employee.filteredSum(empregados2
@@ -144,11 +153,13 @@ public class Program {
 			
 			empregados2.forEach(cons);*/
 			
-			empregados2.forEach(Employee::acceptSalary);
+			//empregados2.forEach(Employee::acceptSalary);
 			
-			Consumer<Employee> consum = e -> {
-				e.setSalary(e.getSalary());
-			};
+			/*Consumer<Employee> consum = e -> {
+				e.setSalary(e.getSalary()*0.1);
+			};*/
+			
+			Consumer<Employee> consum = e -> e.setSalary(e.getSalary() * 0.1);
 			
 			empregados2.forEach(consum);
 			
