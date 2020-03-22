@@ -41,8 +41,16 @@ public class Employee {
 		return e1.getEmail().toUpperCase().compareTo(e2.getEmail().toUpperCase());
 	}
 	
+	public int compareNonStaticEmail(Employee e1) {
+		return this.getEmail().toUpperCase().compareTo(e1.getEmail().toUpperCase());
+	}
+	
 	public static String applyEmail(Employee e) {
 		return e.email;
+	}
+	
+	public String applyNonStaticEmail() {
+		return email;
 	}
 	
 	public static boolean testCharacter(Employee e) {

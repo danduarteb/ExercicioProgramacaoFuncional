@@ -66,7 +66,9 @@ public class Program {
 			
 			empregados.sort(comp);*/
 			
-			empregados.sort(Employee::compareEmail);
+			//empregados.sort(Employee::compareEmail);
+			
+			empregados.sort(Employee::compareNonStaticEmail);
 			
 			//emails = empregados.stream().map(new EmailEmployee()).collect(Collectors.toList());
 			
@@ -79,7 +81,9 @@ public class Program {
 			
 			emails = empregados.stream().map(funct).collect(Collectors.toList());*/
 			
-			emails = empregados.stream().map(Employee::applyEmail).collect(Collectors.toList());
+			//emails = empregados.stream().map(Employee::applyEmail).collect(Collectors.toList());
+			
+			emails = empregados.stream().map(Employee::applyNonStaticEmail).collect(Collectors.toList());
 			
 			System.out.println("Email of people whose salary is more than " + salary);
 			emails.forEach(System.out::println);
