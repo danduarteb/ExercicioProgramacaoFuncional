@@ -60,9 +60,11 @@ public class Program {
 				return p1.getSalary() <= salary;
 			};*/
 			
-			Predicate<Employee> pred = p1 -> p1.getSalary() <= 2000.00;
+			//Predicate<Employee> pred = p1 -> p1.getSalary() <= 2000.00;
 			
-			empregados.removeIf(pred);
+			//empregados.removeIf(pred);
+			
+			empregados.removeIf(p1 -> p1.getSalary() <= 2000);
 			
 			//empregados.sort(new EmailComparator());
 			
@@ -83,10 +85,13 @@ public class Program {
 				return p1.getEmail().toUpperCase().compareTo(p2.getEmail().toUpperCase());
 			};*/
 			
-			Comparator<Employee> comp = (p1, p2) -> 
+			/*Comparator<Employee> comp = (p1, p2) -> 
 				p1.getEmail().toUpperCase().compareTo(p2.getEmail().toUpperCase());
 			
-			empregados.sort(comp);
+			empregados.sort(comp);*/
+			
+			empregados.sort((p1, p2) -> 
+				p1.getEmail().toUpperCase().compareTo(p2.getEmail().toUpperCase()));
 			
 			//emails = empregados.stream().map(new EmailEmployee()).collect(Collectors.toList());
 			
@@ -105,9 +110,11 @@ public class Program {
 				return p.getEmail();
 			};*/
 			
-			Function<Employee, String> func = p ->  p.getEmail();
+			/*Function<Employee, String> func = p ->  p.getEmail();
 			
-			emails = empregados.stream().map(func).collect(Collectors.toList());
+			emails = empregados.stream().map(func).collect(Collectors.toList());*/
+			
+			emails = empregados.stream().map(p -> p.getEmail()).collect(Collectors.toList());
 			
 			System.out.println("Email of people whose salary is more than " + salary);
 			emails.forEach(System.out::println);
@@ -136,11 +143,15 @@ public class Program {
 				return p.getName().charAt(0) == 'M';
 			};*/
 			
-			Predicate<Employee> pred2 = p -> p.getName().charAt(0) == 'M';
+			/*Predicate<Employee> pred2 = p -> p.getName().charAt(0) == 'M';
 			
 			System.out.println("Sum of salary of people whose name starts with 'M': " 
 					+ Employee.filteredSum(empregados2
-							, pred2));
+							, pred2));*/
+			
+			System.out.println("Sum of salary of people whose name starts with 'M': " 
+					+ Employee.filteredSum(empregados2
+							, p -> p.getName().charAt(0) == 'M'));
 			
 			//empregados2.forEach(new SalaryUpdate());
 			
@@ -159,9 +170,11 @@ public class Program {
 				e.setSalary(e.getSalary()*0.1);
 			};*/
 			
-			Consumer<Employee> consum = e -> e.setSalary(e.getSalary() * 0.1);
+			/*Consumer<Employee> consum = e -> e.setSalary(e.getSalary() * 0.1);
 			
-			empregados2.forEach(consum);
+			empregados2.forEach(consum);*/
+			
+			empregados2.forEach(p -> p.setSalary(p.getSalary() * 0.1));
 			
 			empregados2.forEach(System.out::println);
 		} catch (FileNotFoundException e) {
